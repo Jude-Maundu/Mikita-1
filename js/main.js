@@ -20,25 +20,20 @@ const CONFIG = {
 
   // 📸 Photos: src = path inside images/ folder, caption = memory text
   photos: [
-   
-    {src:"images/WhatsApp Unknown 2026-05-10 at 12.41.01 AM/WhatsApp Image 2026-05-10 at 12.40.49 AM (1).jpeg"},
-    {src:"images/WhatsApp Unknown 2026-05-10 at 12.41.01 AM/WhatsApp Image 2026-05-10 at 12.40.49 AM (2).jpeg"},
-    {src:"images/WhatsApp Unknown 2026-05-10 at 12.41.01 AM/WhatsApp Image 2026-05-10 at 12.40.49 AM.jpeg"},
-    {src:"images/WhatsApp Unknown 2026-05-10 at 12.41.01 AM/WhatsApp Image 2026-05-10 at 12.40.50 AM (1).jpeg"},
-    {src:"images/WhatsApp Unknown 2026-05-10 at 12.41.01 AM/WhatsApp Image 2026-05-10 at 12.40.50 AM.jpeg"},
-    {src:"images/WhatsApp Unknown 2026-05-10 at 12.41.01 AM/WhatsApp Image 2026-05-10 at 12.40.51 AM (1).jpeg"},
-  {src:"images/WhatsApp Unknown 2026-05-10 at 12.41.01 AM/WhatsApp Image 2026-05-10 at 12.40.51 AM.jpeg"},
-
-
-
-    { src: "images/WhatsApp Image 2026-04-08 at 7.59.16 PM (2).jpeg"},``
-    { src: "images/WhatsApp Image 2026-04-08 at 7.59.16 PM (3).jpeg"},
-  
-    { src: "images/WhatsApp Image 2026-04-08 at 7.59.16 PM.jpeg"},
-    { src: "images/WhatsApp Image 2026-05-09 at 6.44.59 PM.jpeg"},
-    { src: "images/WhatsApp Image 2026-05-09 at 6.45.00 PM.jpeg" },
-    { src: "images/WhatsApp Image 2026-05-09 at 6.48.47 PM.jpeg" },
-     { src: "images/WhatsApp Image 2026-04-08 at 7.59.16 PM (1).jpeg" },
+    { src: "images/WhatsApp Unknown 2026-05-10 at 12.41.01 AM/WhatsApp Image 2026-05-10 at 12.40.49 AM (1).jpeg", caption: "Birthday night smile" },
+    { src: "images/WhatsApp Unknown 2026-05-10 at 12.41.01 AM/WhatsApp Image 2026-05-10 at 12.40.49 AM (2).jpeg", caption: "Late night laughter" },
+    { src: "images/WhatsApp Unknown 2026-05-10 at 12.41.01 AM/WhatsApp Image 2026-05-10 at 12.40.49 AM.jpeg", caption: "Our favorite moment" },
+    { src: "images/WhatsApp Unknown 2026-05-10 at 12.41.01 AM/WhatsApp Image 2026-05-10 at 12.40.50 AM (1).jpeg", caption: "Happy memories" },
+    { src: "images/WhatsApp Unknown 2026-05-10 at 12.41.01 AM/WhatsApp Image 2026-05-10 at 12.40.50 AM.jpeg", caption: "Sweet celebration" },
+    { src: "images/WhatsApp Unknown 2026-05-10 at 12.41.01 AM/WhatsApp Image 2026-05-10 at 12.40.51 AM (1).jpeg", caption: "Joyful togetherness" },
+    { src: "images/WhatsApp Unknown 2026-05-10 at 12.41.01 AM/WhatsApp Image 2026-05-10 at 12.40.51 AM.jpeg", caption: "Golden hour mood" },
+    { src: "images/WhatsApp Image 2026-04-08 at 7.59.16 PM (2).jpeg", caption: "Cherished memories" },
+    { src: "images/WhatsApp Image 2026-04-08 at 7.59.16 PM (3).jpeg", caption: "Heartfelt moments" },
+    { src: "images/WhatsApp Image 2026-04-08 at 7.59.16 PM.jpeg", caption: "Beautiful day" },
+    { src: "images/WhatsApp Image 2026-05-09 at 6.44.59 PM.jpeg", caption: "Today's joy" },
+    { src: "images/WhatsApp Image 2026-05-09 at 6.45.00 PM.jpeg", caption: "Birthday eve" },
+    { src: "images/WhatsApp Image 2026-05-09 at 6.48.47 PM.jpeg", caption: "Last moment before tomorrow" },
+    { src: "images/WhatsApp Image 2026-04-08 at 7.59.16 PM (1).jpeg", caption: "Golden memory" },
   ],
 
   // 💐 Virtual flowers
@@ -513,36 +508,37 @@ const vinyl = document.getElementById("vinyl");
 const arm = document.getElementById("vinylArm");
 const playBtn = document.getElementById("playBtn");
 
-function togglePlay() {
-  playing = !playing;
-  if (playing) {
-    vinyl.classList.add("spinning");
-    arm.classList.add("playing");
-    playBtn.textContent = "⏸ Pause";
-    audio.play().catch(() => {
-  
-    });
-  } else {
-    vinyl.classList.remove("spinning");
-    arm.classList.remove("playing");
-    playBtn.textContent = "▶ Play";
-    audio.pause();
-  }
+if (audio) {
+  audio.volume = 0.7;
+  audio.muted = false;
+  audio.addEventListener("error", () => {
+    const err = audio.error;
+    console.error("Audio load error", err);
+    alert("Audio failed to load. Please check the MP3 file path and file name.");
+  });
+  audio.addEventListener("canplay", () => {
+    console.log("Audio ready to play");
+  });
 }
 
 function setVolume(val) {
-  audio.volume = parseFloat(val);
+  if (audio) audio.volume = parseFloat(val);
 }
 
 function togglePlay() {
+  if (!audio || !vinyl || !arm || !playBtn) {
+    console.error("Music player elements missing", { audio, vinyl, arm, playBtn });
+    return;
+  }
+
   playing = !playing;
   if (playing) {
     vinyl.classList.add("spinning");
     arm.classList.add("playing");
     playBtn.textContent = "⏸ Pause";
     audio.play().catch((error) => {
-      console.log("Play error:", error);
-      alert("Could not play: " + error.message);
+      console.error("Play error:", error);
+      alert("Could not play audio: " + (error && error.message ? error.message : "unknown error"));
     });
   } else {
     vinyl.classList.remove("spinning");
