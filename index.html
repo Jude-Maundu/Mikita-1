@@ -1,0 +1,339 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Happy Birthday, [Her Name] 🎂</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400&family=Cormorant+Garamond:wght@300;400;500&family=Dancing+Script:wght@600;700&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="css/style.css" />
+  </head>
+  <body>
+    <!-- MOUSE GLOW -->
+    <div id="mouseGlow"></div>
+
+    <!-- FLOATING HEARTS CONTAINER -->
+    <div id="heartsContainer"></div>
+
+    <!-- CONFETTI CANVAS -->
+    <canvas id="confettiCanvas"></canvas>
+
+    <!-- BIRTHDAY MODAL -->
+    <div id="birthdayModal" class="modal-overlay">
+      <div class="modal-box">
+        <div class="modal-sparkle">✨</div>
+        <h2>Surprise! 🎉</h2>
+        <p>
+          This whole website is just for <strong>YOU</strong>.<br />Happy
+          birthday, bestie! ❤️
+        </p>
+        <button class="btn-gold" onclick="closeModal()">
+          Open Your Gift 🎁
+        </button>
+      </div>
+    </div>
+
+    <!-- NAV -->
+    <nav id="navbar">
+      <div class="nav-inner">
+        <span class="nav-logo">🌟 Her Day</span>
+        <div class="nav-links">
+          <a href="#gallery">Photos</a>
+          <a href="#flowers">Flowers</a>
+          <a href="#music">Music</a>
+          <a href="#reasons">You're Amazing</a>
+          <a href="#extras">More</a>
+        </div>
+      </div>
+    </nav>
+
+    <!-- HERO SECTION -->
+    <section id="hero">
+      <div class="sparkle-bg" id="sparkleBg"></div>
+      <div class="hero-content">
+        <p class="hero-pre">Today is all about</p>
+        <h1 class="hero-title">
+          Happy Birthday,<br /><span class="hero-name">Mikita</span>
+        </h1>
+        <p class="hero-sub">You mean the world to me 💛</p>
+        <div class="hero-date-badge" id="heroDate"></div>
+        <button class="btn-gold btn-pulse" onclick="smoothScrollTo('#gallery')">
+          ✨ Celebrate ✨
+        </button>
+      </div>
+      <div class="hero-scroll-hint">↓</div>
+    </section>
+
+    <!-- COUNTDOWN TIMER -->
+    <section id="countdown">
+      <div class="container">
+        <div class="countdown-inner">
+          <p class="countdown-label" id="countdownLabel">
+            Days until you shine ✨
+          </p>
+          <div class="countdown-boxes" id="countdownBoxes">
+            <div class="cbox">
+              <span id="cDays">00</span><small>Days</small>
+            </div>
+            <div class="cbox">
+              <span id="cHours">00</span><small>Hours</small>
+            </div>
+            <div class="cbox">
+              <span id="cMins">00</span><small>Minutes</small>
+            </div>
+            <div class="cbox">
+              <span id="cSecs">00</span><small>Seconds</small>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- PHOTO GALLERY -->
+    <section id="gallery">
+      <div class="container">
+        <div class="section-header">
+          <h2>Our Beautiful Memories</h2>
+          <p>Every picture tells our story 📸</p>
+        </div>
+        <div class="gallery-grid" id="galleryGrid">
+          <!-- Photos injected by JS -->
+        </div>
+      </div>
+    </section>
+
+    <!-- LIGHTBOX -->
+    <div id="lightbox" class="lightbox-overlay">
+      <div class="lightbox-box">
+        <button class="lb-close" onclick="closeLightbox()">✕</button>
+        <button class="lb-nav lb-prev" onclick="lightboxNav(-1)">‹</button>
+        <img id="lbImg" src="" alt="Memory" style="display: none" />
+        <video
+          id="lbVideo"
+          style="display: none; width: 100%; height: auto; max-height: 80vh"
+          controls
+        ></video>
+        <p id="lbCaption"></p>
+        <button class="lb-nav lb-next" onclick="lightboxNav(1)">›</button>
+      </div>
+    </div>
+
+    <!-- VIRTUAL FLOWERS -->
+    <section id="flowers">
+      <div class="container">
+        <div class="section-header">
+          <h2>A Bouquet Just for You 💐</h2>
+          <p>Click each flower to reveal a hidden message</p>
+        </div>
+        <div class="flower-counter">
+          <span id="flowerCount"
+            >You've picked <strong>0</strong> out of
+            <strong>7</strong> flowers</span
+          >
+        </div>
+        <div class="flowers-garden" id="flowersGarden">
+          <!-- Flowers injected by JS -->
+        </div>
+        <div id="bouquetSurprise" class="bouquet-surprise hidden">
+          <div class="bouquet-msg">
+            <span class="bouquet-emoji">💐🌟💐</span>
+            <h3>You've collected the full bouquet!</h3>
+            <p>You are truly the best friend anyone could ever ask for ❤️</p>
+          </div>
+        </div>
+        <div class="flowers-actions">
+          <button
+            class="btn-gold"
+            id="regrowBtn"
+            onclick="regrowFlowers()"
+            style="display: none"
+          >
+            🌱 Regrow Flowers
+          </button>
+        </div>
+      </div>
+    </section>
+
+    <!-- SPINNING VINYL / MUSIC PLAYER -->
+    <section id="music">
+      <div class="container">
+        <div class="section-header">
+          <h2>Our Song 🎵</h2>
+          <p>Press play and let the music fill your heart</p>
+        </div>
+        <div class="vinyl-player">
+          <div class="vinyl-wrap">
+            <div class="vinyl" id="vinyl">
+              <div class="vinyl-grooves"></div>
+              <div class="vinyl-center">
+                <img
+                  src="images/cover.jpg"
+                  alt="Album Cover"
+                  id="vinylCover"
+                  onerror="
+                    this.style.display = 'none';
+                    document.getElementById('vinylInitials').style.display =
+                      'flex';
+                  "
+                />
+                <div id="vinylInitials" class="vinyl-initials">❤️</div>
+              </div>
+              <div class="vinyl-glow"></div>
+            </div>
+            <div class="vinyl-arm" id="vinylArm"></div>
+          </div>
+          <div class="player-info">
+            <h3 class="song-title">[Her Name] &amp; You</h3>
+            <p class="song-artist">Best Friends Forever</p>
+            <div class="player-controls">
+              <button
+                class="btn-gold play-btn"
+                id="playBtn"
+                onclick="togglePlay()"
+              >
+                ▶ Play
+              </button>
+            </div>
+            <div class="volume-wrap">
+              <span>🔈</span>
+              <input
+                type="range"
+                id="volumeSlider"
+                min="0"
+                max="1"
+                step="0.01"
+                value="0.7"
+                oninput="setVolume(this.value)"
+                class="volume-slider"
+              />
+              <span>🔊</span>
+            </div>
+            <audio id="audioPlayer" loop autoplay>
+              <source
+                src="audio/Justin Timberlake - Mirrors (Lyrics) [ZFlpVBFSEis].mp3"
+                type="audio/mpeg"
+              />
+            </audio>
+            <p class="music-hint">
+              🎵 Add your MP3 to the <code>audio/</code> folder and update the
+              source in <code>index.html</code>
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- REASONS YOU'RE AMAZING -->
+    <section id="reasons">
+      <div class="container">
+        <div class="section-header">
+          <h2>Why You're So Amazing ✨</h2>
+          <p>Just a few of a thousand reasons</p>
+        </div>
+        <div class="reasons-grid" id="reasonsGrid">
+          <!-- Cards injected by JS -->
+        </div>
+      </div>
+    </section>
+
+    <!-- EXTRA BIRTHDAY FEATURES -->
+    <section id="extras">
+      <div class="container">
+        <div class="section-header">
+          <h2>Extra Birthday Magic ✨</h2>
+          <p>More playful surprises to make today unforgettable</p>
+        </div>
+
+        <div class="feature-section" id="love-letter">
+          <div class="feature-header">
+            <h3>Love Letter Reveal</h3>
+            <p>Open the envelope to see a hidden message.</p>
+          </div>
+          <div class="letter-panel">
+            <button class="envelope-btn" id="openLetterBtn">
+              Open the Love Letter 💌
+            </button>
+            <div class="letter-content hidden" id="loveLetterMessage">
+              <p>Dear you,</p>
+              <p>
+                Every moment with you is my favourite. Today I wish you all the
+                sparkle, laughter, and magic you bring into my life.
+              </p>
+              <p>Happy birthday, my favourite person.</p>
+              <p>Love always,</p>
+              <p><strong>[Your Name]</strong></p>
+            </div>
+          </div>
+        </div>
+
+        <div class="feature-section" id="guestbook">
+          <div class="feature-header">
+           
+        <div class="feature-section" id="candles">
+          <div class="feature-header">
+            <h3>Blow Out the Candles</h3>
+            <p>Tap each candle to blow it out and make a wish.</p>
+          </div>
+          <div class="cake-stage">
+            <div class="cake-message" id="cakeMessage">
+              Tap all the candles to make your wish!
+            </div>
+            <div class="cake" id="cakeContainer"></div>
+          </div>
+        </div>
+
+        <div class="feature-section" id="timeline">
+          <div class="feature-header">
+            <h3>Friendship Timeline</h3>
+            <p>A scrollable story of our happiest moments.</p>
+          </div>
+          <div class="timeline-list" id="timelineList"></div>
+        </div>
+
+        <div class="feature-section" id="scratch-cards">
+          <div class="feature-header">
+            <h3>Gold Scratch Cards</h3>
+            <p>Scratch off each card to reveal a private birthday message.</p>
+          </div>
+          <div class="scratch-cards-grid" id="scratchCardsGrid"></div>
+        </div>
+
+        <div class="feature-section" id="stars">
+          <div class="feature-header">
+            <h3>Wishing Stars</h3>
+            <p>Click the stars to make a wish and watch them glow.</p>
+          </div>
+          <div class="star-wish-panel">
+            <div class="star-count" id="starWishCount">Wishes made: 0</div>
+            <div class="star-field" id="starField"></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- CONFETTI BUTTON -->
+    <section id="celebrateSection">
+      <div class="container text-center">
+        <button class="btn-gold btn-large" onclick="launchConfetti()">
+          🎊 Celebrate Again! 🎊
+        </button>
+      </div>
+    </section>
+
+    <!-- FOOTER -->
+    <footer id="footer">
+      <div class="footer-inner">
+        <p class="footer-heart">💛</p>
+        <p class="footer-name">Made with love by <strong>Jude</strong></p>
+        <p class="footer-phrase">For my one and only best friend</p>
+        <p class="footer-date" id="footerDate"></p>
+      </div>
+    </footer>
+
+    <script src="js/main.js"></script>
+  </body>
+</html>
